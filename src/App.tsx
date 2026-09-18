@@ -38,7 +38,7 @@ function PillIcon({ size = 18 }: { size?: number | string }) { const s = typeof 
 function money(value: number) { return `₹${value.toLocaleString('en-IN')}`; }
 function discount(product: Product) { return Math.round((1 - product.price / product.mrp) * 100); }
 
-function App() {
+export default function App() {
   const [category, setCategory] = useState<Category>('All');
   const [search, setSearch] = useState('');
   const [modal, setModal] = useState<Modal>(null);
@@ -101,7 +101,7 @@ function App() {
 
     openWhatsApp(msg);
     setOrderPlaced(true);
-    setCart([]); // Clear cart after placing order
+    setCart(); // Clear cart after placing order
   }
 
   const heroSlides = [
@@ -114,13 +114,20 @@ function App() {
   return <div className="app-shell">
     <div className="topbar"><div className="page-width topbar-inner"><span><Zap size={14} fill="currentColor" /> Free 10-Min Delivery in Perumbavoor</span><span className="topbar-divider" /> <span>Genuine medicines</span><span className="topbar-divider" /> <span>Easy UPI payments</span><a href="tel:+919567964177"><Phone size={13} /> +91 95679 64177</a></div></div>
     <header className="site-header">
-      <div className="page-width header-top"><a className="brand" href="#top" aria-label="United Medimart home"><span className="brand-mark"><span className="brand-pill" /></span><span><strong>United</strong><small>medimart</small></span></a><button className="location-chip"><MapPin size={17} /><span><small>Delivering to</small>Perumbavoor, Kerala</span><ChevronDown size={15} /></button><div className="desktop-header-actions"><button className="header-icon-button" onClick={() => setModal('account')} aria-label="Open account"><UserRound size={20} /><span>Account</span></button><button className="cart-button" onClick={() => setModal('cart')}><ShoppingCart size={21} /><span>Cart</span>{cartCount > 0 && <b>{cartCount}</b>}</button></div><div className="mobile-actions"><button onClick={() => setModal('account')} aria-label="Open account"><UserRound size={20} /></button><button onClick={() => setModal('cart')} aria-label="Open cart"><ShoppingCart size={20} />{cartCount > 0 && <b>{cartCount}</b>}</button></div></div>
+      <div className="page-width header-top">
+        <a className="brand" href="#top" aria-label="United Medimart home">
+          <img src="/logo.png" alt="United Medimart Logo" className="brand-logo-img" style={{ height: '38px', width: 'auto', objectFit: 'contain' }} />
+        </a>
+        <button className="location-chip"><MapPin size={17} /><span><small>Delivering to</small>Perumbavoor, Kerala</span><ChevronDown size={15} /></button>
+        <div className="desktop-header-actions"><button className="header-icon-button" onClick={() => setModal('account')} aria-label="Open account"><UserRound size={20} /><span>Account</span></button><button className="cart-button" onClick={() => setModal('cart')}><ShoppingCart size={21} /><span>Cart</span>{cartCount > 0 && <b>{cartCount}</b>}</button></div>
+        <div className="mobile-actions"><button onClick={() => setModal('account')} aria-label="Open account"><UserRound size={20} /></button><button onClick={() => setModal('cart')} aria-label="Open cart"><ShoppingCart size={20} />{cartCount > 0 && <b>{cartCount}</b>}</button></div>
+      </div>
       <div className="page-width search-row"><div className="search-box"><Search size={19} /><input value={search} onChange={(event) => setSearch(event.target.value)} placeholder="Search medicines, healthcare devices..." aria-label="Search products" />{search && <button onClick={() => setSearch('')} aria-label="Clear search"><X size={17} /></button>}<kbd>⌘ K</kbd></div><button className="upload-header-action" onClick={() => setModal('prescription')}><FileText size={18} /> Upload Prescription</button></div>
     </header>
     <nav className="category-nav" aria-label="Shop categories"><div className="page-width category-scroll">{categories.map(({ label, icon: Icon }) => <button key={label} className={category === label ? 'category active' : 'category'} onClick={() => { setCategory(label); document.getElementById('catalog')?.scrollIntoView({ behavior: 'smooth' }); }}><Icon size={18} /> {label}</button>)}</div></nav>
 
     <main id="top">
-      <section className={`hero ${activeSlide.color}`}><div className="page-width hero-inner"><div className="hero-copy"><span className="eyebrow"><span className="eyebrow-dot" /> {activeSlide.eyebrow}</span><h1>{activeSlide.title}</h1><p>{activeSlide.body}</p><button className="button button-white" onClick={() => slide === 1 ? setModal('prescription') : document.getElementById('catalog')?.scrollIntoView({ behavior: 'smooth' })}>{activeSlide.action} <ArrowRight size={18} /></button></div><div className="hero-art"><div className="hero-orbit orbit-one" /><div className="hero-orbit orbit-two" /><div className="hero-card medicine-card"><div className="medicine-label"><span>UM</span><small>UNITED<br />MEDIMART</small></div><div className="medicine-bottle"><span /></div><strong>Care, closer to home.</strong><small>Perumbavoor · Kerala</small></div><div className="hero-float-card"><BadgeCheck size={18} /><span>Pharmacist<br /><strong>support</strong></span></div><div className="hero-plus">+</div></div></div><div className="page-width hero-controls"><div className="hero-dots">{heroSlides.map((_, index) => <button key={index} className={slide === index ? 'active' : ''} onClick={() => setSlide(index)} aria-label={`Go to slide ${index + 1}`} />)}</div><div className="hero-arrows"><button onClick={() => setSlide((slide + 2) % 3)} aria-label="Previous slide"><ChevronLeft size={18} /></button><button onClick={() => setSlide((slide + 1) % 3)} aria-label="Next slide"><ChevronRight size={18} /></button></div></div></section>
+      <section className={`hero ${activeSlide.color}`}><div className="page-width hero-inner"><div className="hero-copy"><span className="eyebrow"><span className="eyebrow-dot" /> {activeSlide.eyebrow}</span><h1>{activeSlide.title}</h1><p>{activeSlide.body}</p><button className="button button-white" onClick={() => slide === 1 ? setModal('prescription') : document.getElementById('catalog')?.scrollIntoView({ behavior: 'smooth' })}>{activeSlide.action} <ArrowRight size={18} /></button></div><div className="hero-art"><div className="hero-orbit orbit-one" /><div className="hero-orbit orbit-two" /><div className="hero-card medicine-card"><div className="medicine-label"><img src="/logo.png" alt="Logo" style={{ height: '24px', width: 'auto', marginBottom: '4px' }} /><small>UNITED<br />MEDIMART</small></div><div className="medicine-bottle"><span /></div><strong>Care, closer to home.</strong><small>Perumbavoor · Kerala</small></div><div className="hero-float-card"><BadgeCheck size={18} /><span>Pharmacist<br /><strong>support</strong></span></div><div className="hero-plus">+</div></div></div><div className="page-width hero-controls"><div className="hero-dots">{heroSlides.map((_, index) => <button key={index} className={slide === index ? 'active' : ''} onClick={() => setSlide(index)} aria-label={`Go to slide ${index + 1}`} />)}</div><div className="hero-arrows"><button onClick={() => setSlide((slide + 2) % 3)} aria-label="Previous slide"><ChevronLeft size={18} /></button><button onClick={() => setSlide((slide + 1) % 3)} aria-label="Next slide"><ChevronRight size={18} /></button></div></div></section>
 
       <section className="page-width quick-actions"><ActionCard icon={<Upload />} title="Upload Prescription" description="Upload an image or PDF for pharmacy verification." action="Upload Now" onClick={() => setModal('prescription')} /><ActionCard icon={<WalletCards />} title="Quick UPI Pay" description="Pay securely using your preferred UPI app." action="Pay Now" onClick={() => { setModal('checkout'); setCheckoutStep(2); }} /><ActionCard icon={<MessageCircle />} title="Consult Pharmacist" description="Get help from our pharmacy desk." action="Chat on WhatsApp" onClick={() => openWhatsApp('Hello United Medimart, I would like to speak with a pharmacist.')} /></section>
 
@@ -130,7 +137,21 @@ function App() {
       <section className="page-width reassurance"><div><span className="section-kicker">Your local health partner</span><h2>Healthcare that feels a little closer.</h2><p>From daily wellness needs to essential devices, United Medimart brings a more thoughtful pharmacy experience to Perumbavoor.</p><button className="text-button" onClick={() => openWhatsApp('Hello United Medimart, I have a question about a product.')}>Talk to our pharmacy team <ArrowRight size={17} /></button></div><div className="reassurance-card"><div className="reassurance-icon"><Store /></div><span>Visit us</span><strong>Kuruppampady Rd</strong><small>Near Indian Oil Petrol Pump<br />Perumbavoor, Kerala 683548</small><a href="tel:+919567964177"><Phone size={15} /> +91 95679 64177</a></div></section>
     </main>
 
-    <footer className="site-footer"><div className="page-width footer-grid"><div className="footer-brand"><a className="brand brand-light" href="#top"><span className="brand-mark"><span className="brand-pill" /></span><span><strong>United</strong><small>medimart</small></span></a><p>Your trusted neighbourhood pharmacy in Perumbavoor, Kerala.</p><a className="whatsapp-link" href={`https://wa.me/${whatsappNumber}`} target="_blank" rel="noreferrer"><MessageCircle size={17} /> Chat with us on WhatsApp</a></div><div><h4>Shop</h4><a href="#catalog">Medicines</a><a href="#catalog">Healthcare Devices</a><a href="#catalog">Wellness</a><a href="#catalog">Personal Care</a></div><div><h4>Support</h4><a href="#top">Contact us</a><a href="#top">Privacy Policy</a><a href="#top">Terms of service</a><a href="#top">Refund & Return Policy</a></div><div><h4>Pharmacy desk</h4><p>Prescription medicines are dispensed only after verification by the pharmacy team and in accordance with applicable regulations.</p><a className="footer-phone" href="tel:+919567964177"><Phone size={16} /> +91 95679 64177</a></div></div><div className="page-width footer-bottom"><span>© 2026 United Medimart. All rights reserved.</span><span>Made for better everyday care.</span></div></footer>
+    <footer className="site-footer">
+      <div className="page-width footer-grid">
+        <div className="footer-brand">
+          <a className="brand brand-light" href="#top">
+            <img src="/logo.png" alt="United Medimart Logo" style={{ height: '32px', width: 'auto', objectFit: 'contain', filter: 'brightness(0) invert(1)' }} />
+          </a>
+          <p>Your trusted neighbourhood pharmacy in Perumbavoor, Kerala.</p>
+          <a className="whatsapp-link" href={`https://wa.me/${whatsappNumber}`} target="_blank" rel="noreferrer"><MessageCircle size={17} /> Chat with us on WhatsApp</a>
+        </div>
+        <div><h4>Shop</h4><a href="#catalog">Medicines</a><a href="#catalog">Healthcare Devices</a><a href="#catalog">Wellness</a><a href="#catalog">Personal Care</a></div>
+        <div><h4>Support</h4><a href="#top">Contact us</a><a href="#top">Privacy Policy</a><a href="#top">Terms of service</a><a href="#top">Refund & Return Policy</a></div>
+        <div><h4>Pharmacy desk</h4><p>Prescription medicines are dispensed only after verification by the pharmacy team and in accordance with applicable regulations.</p><a className="footer-phone" href="tel:+919567964177"><Phone size={16} /> +91 95679 64177</a></div>
+      </div>
+      <div className="page-width footer-bottom"><span>© 2026 United Medimart. All rights reserved.</span><span>Made for better everyday care.</span></div>
+    </footer>
 
     {modal && <ModalShell title={modal === 'prescription' ? 'Upload Prescription' : modal === 'product' ? selectedProduct.name : modal === 'cart' ? 'Your cart' : modal === 'checkout' ? (orderPlaced ? 'Order confirmed' : 'Checkout') : 'Your account'} onClose={() => { setModal(null); if (modal === 'checkout') setOrderPlaced(false); }} wide={modal === 'checkout' || modal === 'product'}>{modal === 'prescription' && <PrescriptionModal prescription={prescription} onFile={handleFile} onRemove={() => setPrescription(null)} onSend={() => { openWhatsApp(whatsappMessage); setToast('WhatsApp opened with your message'); }} />}{modal === 'product' && <ProductDetails product={selectedProduct} onAdd={(product, quantity) => { addToCart(product, quantity); setModal('cart'); }} onOpen={showProduct} />}{modal === 'cart' && <CartPanel cart={cart} subtotal={subtotal} delivery={delivery} total={total} onChange={updateQuantity} onRemove={(id) => setCart((current) => current.filter((item) => item.id !== id))} onCheckout={() => { setModal('checkout'); setCheckoutStep(1); }} onShop={() => setModal(null)} />}{modal === 'checkout' && <Checkout step={checkoutStep} setStep={setCheckoutStep} cart={cart} subtotal={subtotal} delivery={delivery} total={total} customer={customer} setCustomer={setCustomer} onComplete={handleSendOrderToWhatsApp} orderPlaced={orderPlaced} />}{modal === 'account' && <Account onClose={() => setModal(null)} onOrder={() => { setModal('checkout'); setOrderPlaced(true); }} />}</ModalShell>}
     {toast && <div className="toast"><BadgeCheck size={18} /> {toast}</div>}
@@ -141,8 +162,43 @@ function ActionCard({ icon, title, description, action, onClick }: { icon: React
 function ProductCard({ product, onOpen, onAdd }: { product: Product; onOpen: (product: Product) => void; onAdd: (product: Product) => void }) { return <article className="product-card"><button className="product-image" onClick={() => onOpen(product)}><img src={product.image} alt={product.name} /><span className="discount-badge">{discount(product)}% off</span>{product.prescription && <span className="rx-badge">Rx required</span>}</button><div className="product-info"><span className="product-category">{product.category}</span><button className="product-name" onClick={() => onOpen(product)}>{product.name}</button><span className="product-brand">{product.brand} · {product.pack}</span><div className="product-price"><strong>{money(product.price)}</strong><del>{money(product.mrp)}</del><span>{discount(product)}% off</span></div><button className="add-button" onClick={() => onAdd(product)}>{product.prescription ? 'Check availability' : 'Add to cart'} <Plus size={17} /></button></div></article>; }
 function TrustItem({ icon, title, body }: { icon: React.ReactNode; title: string; body: string }) { return <div className="trust-item">{icon}<div><strong>{title}</strong><span>{body}</span></div></div>; }
 function ModalShell({ title, onClose, children, wide }: { title: string; onClose: () => void; children: React.ReactNode; wide?: boolean }) { return <div className="modal-backdrop" onMouseDown={(event) => { if (event.target === event.currentTarget) onClose(); }}><section className={wide ? 'modal-panel wide' : 'modal-panel'} role="dialog" aria-modal="true" aria-label={title}><div className="modal-header"><div><span className="section-kicker">United Medimart</span><h2>{title}</h2></div><button className="close-button" onClick={onClose} aria-label="Close"><X size={20} /></button></div>{children}</section></div>; }
-function PrescriptionModal({ prescription, onFile, onRemove, onSend }: { prescription: File | null; onFile: (file: File | undefined) => void; onRemove: () => void; onSend: () => void }) { return <div className="prescription-flow"><p className="modal-intro">Send your prescription to United Medimart for verification and availability.</p><label className="drop-zone" onDragOver={(event) => event.preventDefault()} onDrop={(event) => { event.preventDefault(); onFile(event.dataTransfer.files[0]); }}><input type="file" accept="image/png,image/jpeg,application/pdf" onChange={(event) => onFile(event.target.files?.[0])} /><Upload size={28} /><strong>Drop your prescription here</strong><span>or click to browse · JPG, PNG or PDF · Max 8 MB</span></label>{prescription && <div className="file-preview"><div className="file-icon"><FileText size={21} /></div><div><strong>{prescription.name}</strong><span>{prescription.type === 'application/pdf' ? 'PDF document' : 'Image'} · {(prescription.size / 1024 / 1024).toFixed(2)} MB</span></div><button onClick={onRemove} aria-label="Remove prescription"><Trash2 size={17} /></button></div>}<div className="info-callout"><ShieldCheck size={19} /><span>Your file is prepared for WhatsApp. Browsers cannot attach local files automatically, so you’ll be asked to add it manually in WhatsApp.</span></div><button className="button button-primary full-width" disabled={!prescription} onClick={onSend}>Send to WhatsApp <MessageCircle size={17} /></button></div>; }
-function ProductDetails({ product, onAdd, onOpen }: { product: Product; onAdd: (product: Product, quantity: number) => void; onOpen: (product: Product) => void }) { const [quantity, setQuantity] = useState(1); return <div className="detail-layout"><div className="detail-image"><img src={product.image} alt={product.name} /></div><div className="detail-copy"><span className="product-category">{product.category}</span><h3>{product.name}</h3><span className="detail-brand">{product.brand} · {product.pack}</span><div className="detail-price"><strong>{money(product.price)}</strong><del>{money(product.mrp)}</del><span>{discount(product)}% off</span></div><p>{product.description}</p><div className={`availability ${product.prescription ? 'rx' : ''}`}><BadgeCheck size={18} />{product.prescription ? 'Prescription required for fulfilment' : 'Available for free 10-min delivery'}</div>{product.prescription && <p className="rx-note">Our pharmacy team will verify your prescription before fulfilment.</p>}<div className="detail-actions"><div className="quantity"><button onClick={() => setQuantity(Math.max(1, quantity - 1))}><Minus size={16} /></button><strong>{quantity}</strong><button onClick={() => setQuantity(quantity + 1)}><Plus size={16} /></button></div><button className="button button-primary" onClick={() => onAdd(product, quantity)}>Add to cart <ShoppingCart size={17} /></button></div><div className="related"><strong>You may also like</strong><div>{products.filter((item) => item.id !== product.id && item.category === product.category).slice(0, 2).map((item) => <button key={item.id} onClick={() => onOpen(item)}><img src={item.image} alt="" /><span>{item.name}</span></button>)}</div></div></div></div>; }
+
+function PrescriptionModal({ prescription, onFile, onRemove, onSend }: { prescription: File | null; onFile: (file: File | undefined) => void; onRemove: () => void; onSend: () => void }) { 
+  return (
+    <div className="prescription-flow">
+      <p className="modal-intro">Send your prescription to United Medimart for verification and availability.</p>
+      
+      <label className="drop-zone" onDragOver={(event) => event.preventDefault()} onDrop={(event) => { event.preventDefault(); onFile(event.dataTransfer.files[0]); }}>
+        <input type="file" accept="image/png,image/jpeg,application/pdf" onChange={(event) => onFile(event.target.files?.[0])} />
+        <Upload size={28} />
+        <strong>Drop your prescription here</strong>
+        <span>or click to browse · JPG, PNG or PDF · Max 8 MB</span>
+      </label>
+
+      {prescription && (
+        <div className="file-preview">
+          <div className="file-icon"><FileText size={21} /></div>
+          <div>
+            <strong>{prescription.name}</strong>
+            <span>{prescription.type === 'application/pdf' ? 'PDF document' : 'Image'} · {(prescription.size / 1024 / 1024).toFixed(2)} MB</span>
+          </div>
+          <button onClick={onRemove} aria-label="Remove prescription"><Trash2 size={17} /></button>
+        </div>
+      )}
+
+      <div className="info-callout" style={{ background: '#fef3c7', borderColor: '#f59e0b', color: '#92400e' }}>
+        <ShieldCheck size={19} />
+        <span><b>Note:</b> Due to browser security, WhatsApp will open with your message. Please tap the <b>📎 (Paperclip) icon</b> in WhatsApp to attach this file.</span>
+      </div>
+
+      <button className="button button-primary full-width" disabled={!prescription} onClick={onSend}>
+        Open WhatsApp with Prescription <MessageCircle size={17} />
+      </button>
+    </div>
+  ); 
+}
+
+function ProductDetails({ product, onAdd, onOpen }: { product: Product; onAdd: (product: Product, quantity: number) => void; onOpen: (product: Product) => void }) { const [quantity, setQuantity] = useState(1); return <div className="detail-layout"><div className="detail-image"><img src={product.image} alt={product.name} /></div><div className="detail-copy"><span className="product-category">{product.category}</span><h3>{product.name}</h3><span className="detail-brand">{product.brand} · {product.pack}</span><div className="detail-price"><strong>{money(product.price)}</strong><del>{money(product.mrp)}</del><span>{discount(product)}% off</span></div><p>{product.description}</p><div className={`availability ${product.prescription ? 'rx' : ''}`}><BadgeCheck size={18} />{product.prescription ? 'Prescription required for fulfilment' : 'Available for free 10-min delivery'}</div>{product.prescription && <p className="rx-note">Our pharmacy team will verify your prescription before fulfilment.</p>}<div className="detail-actions"><div className="quantity"><button onClick={() => setQuantity(Math.max(1, quantity - 1))}><Minus size={16} /></button><strong>{quantity}</strong><button onClick={() => setQuantity(quantity + 1)}><Plus size={16} /></button></div><button className="button button-primary" onClick={() => addCart(product, quantity)}>Add to cart <ShoppingCart size={17} /></button></div><div className="related"><strong>You may also like</strong><div>{products.filter((item) => item.id !== product.id && item.category === product.category).slice(0, 2).map((item) => <button key={item.id} onClick={() => onOpen(item)}><img src={item.image} alt="" /><span>{item.name}</span></button>)}</div></div></div></div>; }
 
 function CartPanel({ cart, subtotal, delivery, total, onChange, onRemove, onCheckout, onShop }: { cart: CartItem[]; subtotal: number; delivery: number; total: number; onChange: (id: number, amount: number) => void; onRemove: (id: number) => void; onCheckout: () => void; onShop: () => void }) { 
   return cart.length ? (
@@ -186,8 +242,6 @@ function CartPanel({ cart, subtotal, delivery, total, onChange, onRemove, onChec
 }
 
 function Checkout({ step, setStep, cart, subtotal, delivery, total, customer, setCustomer, onComplete, orderPlaced }: { step: number; setStep: (step: number) => void; cart: CartItem[]; subtotal: number; delivery: number; total: number; customer: any; setCustomer: any; onComplete: () => void; orderPlaced: boolean }) { 
-  const [payment, setPayment] = useState('UPI / Direct WhatsApp Confirmation'); 
-  
   return orderPlaced ? (
     <div className="success-state">
       <div className="success-icon"><PackageCheck size={36} /></div>
@@ -260,6 +314,26 @@ function Checkout({ step, setStep, cart, subtotal, delivery, total, customer, se
   ); 
 }
 
-function Account({ onClose, onOrder }: { onClose: () => void; onOrder: () => void }) { return <div className="account-panel"><div className="account-hero"><div className="avatar">A</div><div><span>Welcome back</span><h3>Guest account</h3></div><button className="button button-light" onClick={onClose}>Continue shopping</button></div><div className="account-section"><div className="account-section-title"><div><span className="section-kicker">Your activity</span><h3>Orders</h3></div><span className="order-count">0 orders</span></div><p className="text-sm text-gray-500 py-4">No past orders saved in this session. Orders go directly to WhatsApp.</p></div><div className="account-links"><button><MapPin size={18} /><span><strong>Saved addresses</strong><small>Manage your delivery locations</small></span><ChevronRight size={18} /></button><button><FileText size={18} /><span><strong>Prescription history</strong><small>Your submitted prescriptions</small></span><ChevronRight size={18} /></button><button onClick={() => window.open(`https://wa.me/${whatsappNumber}?text=${encodeURIComponent('Hello United Medimart, I need help with an order.')}`, '_blank', 'noopener,noreferrer')}><CircleHelp size={18} /><span><strong>Help & Support</strong><small>We’re here to help</small></span><ChevronRight size={18} /></button></div></div>; }
-
-export default App;
+function Account({ onClose }: { onClose: () => void }) { 
+  return (
+    <div className="account-panel">
+      <div className="account-hero">
+        <div className="avatar">A</div>
+        <div><span>Welcome back</span><h3>Guest account</h3></div>
+        <button className="button button-light" onClick={onClose}>Continue shopping</button>
+      </div>
+      <div className="account-section">
+        <div className="account-section-title">
+          <div><span className="section-kicker">Your activity</span><h3>Orders</h3></div>
+          <span className="order-count">0 orders</span>
+        </div>
+        <p className="text-sm text-gray-500 py-4">No past orders saved in this session. Orders go directly to WhatsApp.</p>
+      </div>
+      <div className="account-links">
+        <button><MapPin size={18} /><span><strong>Saved addresses</strong><small>Manage your delivery locations</small></span><ChevronRight size={18} /></button>
+        <button><FileText size={18} /><span><strong>Prescription history</strong><small>Your submitted prescriptions</small></span><ChevronRight size={18} /></button>
+        <button onClick={() => window.open(`https://wa.me/${whatsappNumber}?text=${encodeURIComponent('Hello United Medimart, I need help with an order.')}`, '_blank', 'noopener,noreferrer')}><CircleHelp size={18} /><span><strong>Help & Support</strong><small>We’re here to help</small></span><ChevronRight size={18} /></button>
+      </div>
+    </div>
+  ); 
+}
